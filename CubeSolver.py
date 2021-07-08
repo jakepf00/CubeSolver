@@ -14,7 +14,9 @@ class CubeSolver:
 
 
     def Cross(cube):
-        print("Cross..")
+        finishedState = "xWxWWWxWxxOxxxxxxxxGxxxxxxxxRxxxxxxxxBxxxxxxxxxxxxxxxx"
+        print(CubeSolver.isGoalReached(finishedState, cube.cubeRepresentation))
+        cube = CubeSolver.BFS(cube, finishedState)
 
     def FirstLayerCorners(cube):
         print("Corners..")
@@ -32,4 +34,22 @@ class CubeSolver:
         print("PLL..")
 
     def BFS(cube, goalState):
-        print("Doing BFS..")
+        queue = []
+
+    def isGoalReached(goal, current):
+        print(goal)
+        print(current)
+        solved = True
+        count = 0
+        for i in goal:
+            if (i == 'x'):
+                count = count + 1
+                continue
+            else:
+                if (i != current[count]):
+                    solved = False
+                    break
+                count = count + 1
+        return solved
+
+
