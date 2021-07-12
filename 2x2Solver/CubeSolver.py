@@ -8,12 +8,6 @@ class CubeSolver:
 
 
     def FirstSide(cube):
-        #finishedState = "xxxxxxxxxxxxxxxxxxxxxxxY" # one corner
-        #cube = CubeSolver.BFS(cube, finishedState)
-        #finishedState = "xxxxxxxxxxxxxxxxxxxxxxYY" # two corner
-        #cube = CubeSolver.BFS(cube, finishedState)
-        #finishedState = "xxxxxxxxxxxxxxxxxxxxxYYY" # three corner
-        #cube = CubeSolver.BFS(cube, finishedState)
         finishedState = "xxxxxxxxxxxxxxxxxxxxYYYY" # four corner
         firstSideAlg = CubeSolver.BFS(cube, finishedState)
         print("Finished first side: " + firstSideAlg)
@@ -24,11 +18,13 @@ class CubeSolver:
         finishedState = "WWWWxxxxxxxxxxxxxxxxYYYY" # four corner
         secondSideAlg = CubeSolver.BFS(cube, finishedState)
         print("Finished second side: " + secondSideAlg)
-        cube.applyAlg(secondSideAlg)
         cube.displayCube()
 
     def PBL(cube):
-        print("PBL..")
+        finishedState = "WWWWOOOOGGGGRRRRBBBBYYYY" # finished cube
+        pblAlg = CubeSolver.BFS(cube, finishedState)
+        print("Finished cube: " + pblAlg)
+        cube.displayCube()
 
 
     def BFS(cube, goalState):
