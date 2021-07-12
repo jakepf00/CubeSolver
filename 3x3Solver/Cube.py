@@ -24,6 +24,32 @@ class Cube:
         print("   " +a[51]+a[52]+a[53])
         print()
 
+    def getPosition(self, piece):
+        sortPiece = "".join(sorted(piece))
+        a = self.cubeRepresentation
+        if (len(sortPiece) == 3): #corner
+            targetPiece = "".join(sorted(a[6]+a[11]+a[18]))
+            if (sortPiece == targetPiece): return 0
+            targetPiece = "".join(sorted(a[8]+a[20]+a[27]))
+            if (sortPiece == targetPiece): return 1
+            targetPiece = "".join(sorted(a[0]+a[9]+a[38]))
+            if (sortPiece == targetPiece): return 2
+            targetPiece = "".join(sorted(a[2]+a[29]+a[36]))
+            if (sortPiece == targetPiece): return 3
+            targetPiece = "".join(sorted(a[17]+a[24]+a[45]))
+            if (sortPiece == targetPiece): return 4
+            targetPiece = "".join(sorted(a[26]+a[33]+a[47]))
+            if (sortPiece == targetPiece): return 5
+            targetPiece = "".join(sorted(a[15]+a[44]+a[51]))
+            if (sortPiece == targetPiece): return 6
+            targetPiece = "".join(sorted(a[35]+a[42]+a[53]))
+            if (sortPiece == targetPiece): return 7
+            return 8
+        elif (len(sortPiece) == 2): #edge
+            print("edge")
+        else: #bad
+            return 0
+
 
     def R(self):
         a = self.cubeRepresentation
