@@ -1,17 +1,16 @@
 #pragma once
-class CubeMath
-{
-	class Point {
-	public:
-		Point(int x, int y, int z);
-	private:
-		int x;
-		int y;
-		int z;
-	};
-	class Matrix {
-	public:
-		Matrix();
-	};
+
+class Point {
+public:
+	Point();
+	Point(int x, int y, int z);
+	int x;
+	int y;
+	int z;
+	Point operator+(const Point& p);
+};
+class Matrix {
+public:
+	Matrix();
 };
 

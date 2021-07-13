@@ -1,16 +1,17 @@
 #pragma once
-#include<tuple>
+#include "CubeMath.h"
+#include <tuple>
 
-enum Color { white, orange, green, red, blue, yellow, none };
-enum PieceType { face, edge, corner };
+enum class Color { white='W', orange='O', green='G', red='R', blue='B', yellow='Y', none='N' };
+enum class PieceType { face, edge, corner };
 
 class Piece
 {
 public:
-	Piece(std::tuple<int, int, int> position, std::tuple<Color, Color, Color> colors);
+	Piece(Point position, std::tuple<Color, Color, Color> colors);
 
 private:
-	std::tuple<int, int, int> position; // x, y, z (all 0, 1, or -1)
+	Point position;
 	std::tuple<Color, Color, Color> colors; // gives the color of side of piece on that axis (or none if it does not exist)
 	PieceType type;
 

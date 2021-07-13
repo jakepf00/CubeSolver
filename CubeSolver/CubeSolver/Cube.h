@@ -1,9 +1,17 @@
 #pragma once
+#include "Piece.h"
+#include "CubeMath.h"
+#include <string>
+#include <vector>
+
 class Cube
 {
 public:
-	int thing1;
+	Cube(std::string cubeString);
 private:
-	int thing2;
+	std::vector<Piece> faces;
+	std::vector<Piece> edges;
+	std::vector<Piece> corners;
+	std::vector<Piece> pieces;
 };
 
