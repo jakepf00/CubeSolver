@@ -9,10 +9,10 @@ class Piece
 {
 public:
 	Piece(Point position, std::tuple<Color, Color, Color> colors);
-
-private:
 	Point position;
 	std::tuple<Color, Color, Color> colors; // gives the color of side of piece on that axis (or none if it does not exist)
+
+private:
 	PieceType type;
 
 	void rotate(int matrix[3][3]);

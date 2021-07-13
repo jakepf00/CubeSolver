@@ -4,6 +4,7 @@ class Point {
 public:
 	Point();
 	Point(int x, int y, int z);
+	int dot(Point p); // returns dot product
 	int x;
 	int y;
 	int z;

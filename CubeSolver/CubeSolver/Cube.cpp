@@ -57,3 +57,53 @@ Cube::Cube(std::string cubeString) {
     pieces.insert(pieces.end(), edges.begin(), edges.end());
     pieces.insert(pieces.end(), corners.begin(), corners.end());
 }
+
+bool Cube::isSolved() {
+    // lots of redundancy - could probably make a function to check if a single face is solved
+
+    std::vector<Piece> currentPieces = getFace(FRONT);
+    Color checkColor = std::get<2>(currentPieces[0].colors);
+    for (const Piece& p : currentPieces) { // use const Piece& to avoid copying for each iteration of loop
+        if (std::get<2>(p.colors) != checkColor) return false;
+    }
+
+    currentPieces = getFace(BACK);
+    checkColor = std::get<2>(currentPieces[0].colors);
+    for (const Piece& p : currentPieces) {
+        if (std::get<2>(p.colors) != checkColor) return false;
+    }
+
+    currentPieces = getFace(UP);
+    checkColor = std::get<1>(currentPieces[0].colors);
+    for (const Piece& p : currentPieces) {
+        if (std::get<1>(p.colors) != checkColor) return false;
+    }
+
+    currentPieces = getFace(DOWN);
+    checkColor = std::get<1>(currentPieces[0].colors);
+    for (const Piece& p : currentPieces) {
+        if (std::get<1>(p.colors) != checkColor) return false;
+    }
+
+    currentPieces = getFace(LEFT);
+    checkColor = std::get<0>(currentPieces[0].colors);
+    for (const Piece& p : currentPieces) {
+        if (std::get<0>(p.colors) != checkColor) return false;
+    }
+
+    currentPieces = getFace(RIGHT);
+    checkColor = std::get<0>(currentPieces[0].colors);
+    for (const Piece& p : currentPieces) {
+        if (std::get<0>(p.colors) != checkColor) return false;
+    }
+
+    return true;
+}
+
+std::vector<Piece> Cube::getFace(Point axis) {
+    std::vector<Piece> facePieces;
+    for (Piece p : pieces) {
+        if (p.position.dot(axis) > 0) facePieces.push_back(p);
+    }
+    return facePieces;
+}

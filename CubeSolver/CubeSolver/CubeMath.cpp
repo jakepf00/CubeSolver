@@ -10,6 +10,11 @@ Point::Point(int x, int y, int z) {
 	this->y = y;
 	this->z = z;
 }
+
+int Point::dot(Point p) {
+	return x*p.x + y*p.y + z*p.z;
+}
+
 Point Point::operator+(const Point& p) {
 	Point point(this->x + p.x, this->y + p.y, this->z + p.z);
 	return point;
