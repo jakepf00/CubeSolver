@@ -1,97 +1,106 @@
 from Cube import Cube
 
 class CubeSolver:
-    def Solve(cube):
-        CubeSolver.FirstSide(cube)
-        CubeSolver.SecondSide(cube)
-        CubeSolver.PBL(cube)
 
+    def Solve(self, cube):
+        self.memo = {}
+        path = self.BFS(cube, "WWWWOOOOGGGGRRRRBBBBYYYY")
+        if path:
+            return self.compress(path)
+        return(self.compress(self.backBFS()))
 
-    def FirstSide(cube):
-        finishedState = "xxxxxxxxxxxxxxxxxxxxYYYY" # four corner
-        firstSideAlg = CubeSolver.BFS(cube, finishedState)
-        print("Finished first side: " + firstSideAlg)
-        cube.displayCube()
+    def compress(self, alg):
+        alg = alg + "***"
+        newAlg = ""
+        while alg[0] != "*":
+            if alg[1] != alg[0]: # only one char in a row
+                newAlg = newAlg + alg[0] + " "
+                alg = alg[1:]
+            elif alg[2] != alg[0]: # only two char in a row
+                newAlg = newAlg + alg[0] + "2 "
+                alg = alg[2:]
+            else: # three char in a row
+                newAlg = newAlg + alg[0] + "' "
+                alg = alg[3:]
+        return newAlg
 
+    def invert(self, alg):
+        alg = alg[::-1]
+        alg = alg + "***"
+        newAlg = ""
+        while alg[0] != "*":
+            if alg[1] != alg[0]: # only one char in a row
+                newAlg = newAlg + alg[0] + alg[0] + alg[0]
+                alg = alg[1:]
+            elif alg[2] != alg[0]: # only two char in a row
+                newAlg = newAlg + alg[0] + alg[0]
+                alg = alg[2:]
+            else: # three char in a row
+                newAlg = newAlg + alg[0]
+                alg = alg[3:]
+        return newAlg
 
-    def SecondSide(cube):
-        finishedState = "WWWWxxxxxxxxxxxxxxxxYYYY" # four corner
-        secondSideAlg = CubeSolver.BFS(cube, finishedState)
-        print("Finished second side: " + secondSideAlg)
-        cube.displayCube()
-
-    def PBL(cube):
-        finishedState = "WWWWOOOOGGGGRRRRBBBBYYYY" # finished cube
-        pblAlg = CubeSolver.BFS(cube, finishedState)
-        print("Finished cube: " + pblAlg)
-        cube.displayCube()
-
-
-    def BFS(cube, goalState):
+    def BFS(self, cube, goalState):
         visited = []
         path = []
         queue = []
         queue.append(cube.cubeRepresentation)
         path.append("")
         visited.append(cube.cubeRepresentation)
-        n = 0 # iteration counter
+
+        while len(queue) > 0:
+
+            current = queue.pop(0)
+            currentPath = path.pop(0)
+
+            self.memo[current] = currentPath
+
+            if (self.isGoalReached(goalState, current)):
+                cube.cubeRepresentation = current
+                return currentPath
+            elif len(currentPath) > 6:
+                continue
+            else:
+                moves = ['U', 'L', 'F', 'R', 'B', 'D']
+                for move in moves:
+                    cube.cubeRepresentation = current
+                    cube.applyAlg(move)
+                    if cube.cubeRepresentation not in visited:
+                        nextPath = currentPath + move
+                        queue.append(cube.cubeRepresentation)
+                        path.append(nextPath)
+
+    def backBFS(self):
+        cube = Cube("WWWWOOOOGGGGRRRRBBBBYYYY")
+        visited = []
+        path = []
+        queue = []
+        queue.append(cube.cubeRepresentation)
+        path.append("")
+        visited.append(cube.cubeRepresentation)
 
         while queue[0]:
 
             current = queue.pop(0)
             currentPath = path.pop(0)
 
-            n = n + 1
-            if n % 5000 == 0:
-                print(n)
+            if current in self.memo:
+                return self.memo[current] + self.invert(currentPath)
 
-            if (CubeSolver.isGoalReached(goalState, current)):
+            if (False):
                 cube.cubeRepresentation = current
                 return currentPath
             else:
-                cube.cubeRepresentation = current
-                cube.U()
-                if cube.cubeRepresentation not in visited:
-                    nextPath = currentPath + 'U'
-                    queue.append(cube.cubeRepresentation)
-                    path.append(nextPath)
+                moves = ['U', 'L', 'F', 'R', 'B', 'D']
+                for move in moves:
+                    cube.cubeRepresentation = current
+                    cube.applyAlg(move)
+                    if cube.cubeRepresentation not in visited:
+                        nextPath = currentPath + move
+                        queue.append(cube.cubeRepresentation)
+                        path.append(nextPath)
 
-                cube.cubeRepresentation = current
-                cube.L()
-                if cube.cubeRepresentation not in visited:
-                    nextPath = currentPath + 'L'
-                    queue.append(cube.cubeRepresentation)
-                    path.append(nextPath)
-
-                cube.cubeRepresentation = current
-                cube.F()
-                if cube.cubeRepresentation not in visited:
-                    nextPath = currentPath + 'F'
-                    queue.append(cube.cubeRepresentation)
-                    path.append(nextPath)
-
-                cube.cubeRepresentation = current
-                cube.R()
-                if cube.cubeRepresentation not in visited:
-                    nextPath = currentPath + 'R'
-                    queue.append(cube.cubeRepresentation)
-                    path.append(nextPath)
-
-                cube.cubeRepresentation = current
-                cube.B()
-                if cube.cubeRepresentation not in visited:
-                    nextPath = currentPath + 'B'
-                    queue.append(cube.cubeRepresentation)
-                    path.append(nextPath)
-
-                cube.cubeRepresentation = current
-                cube.D()
-                if cube.cubeRepresentation not in visited:
-                    nextPath = currentPath + 'D'
-                    queue.append(cube.cubeRepresentation)
-                    path.append(nextPath)
-
-    def isGoalReached(goal, current):
+    def isGoalReached(self, goal, current):
         solved = True
         count = 0
         for i in goal:
