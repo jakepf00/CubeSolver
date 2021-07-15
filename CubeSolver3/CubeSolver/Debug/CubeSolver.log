@@ -1,8 +1,7 @@
 ﻿  CubeSolver.cpp
-C:\Users\jakep\Documents\Semester 4.5\CSC 447\Project\CubeSolver\CubeSolver2\CubeSolver\CubeSolver.cpp(183,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\jakep\Documents\Semester 4.5\CSC 447\Project\CubeSolver\CubeSolver2\CubeSolver\CubeSolver.cpp(207,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\jakep\Documents\Semester 4.5\CSC 447\Project\CubeSolver\CubeSolver2\CubeSolver\CubeSolver.cpp(252,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\jakep\Documents\Semester 4.5\CSC 447\Project\CubeSolver\CubeSolver2\CubeSolver\CubeSolver.cpp(297,22): warning C4018: '<': signed/unsigned mismatch
-C:\Users\jakep\Documents\Semester 4.5\CSC 447\Project\CubeSolver\CubeSolver2\CubeSolver\CubeSolver.cpp(308,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\jakep\Documents\Semester 4.5\CSC 447\Project\CubeSolver\CubeSolver2\CubeSolver\CubeSolver.cpp(305): warning C4715: 'CubeSolver::backBFS': not all control paths return a value
-  CubeSolver.vcxproj -> C:\Users\jakep\Documents\Semester 4.5\CSC 447\Project\CubeSolver\CubeSolver2\Debug\CubeSolver.exe
+C:\Users\jakep\Documents\Semester 4.5\CSC 447\Project\CubeSolver\CubeSolver3\CubeSolver\CubeSolver.cpp(172,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jakep\Documents\Semester 4.5\CSC 447\Project\CubeSolver\CubeSolver3\CubeSolver\CubeSolver.cpp(217,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jakep\Documents\Semester 4.5\CSC 447\Project\CubeSolver\CubeSolver3\CubeSolver\CubeSolver.cpp(269,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jakep\Documents\Semester 4.5\CSC 447\Project\CubeSolver\CubeSolver3\CubeSolver\CubeSolver.cpp(297,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jakep\Documents\Semester 4.5\CSC 447\Project\CubeSolver\CubeSolver3\CubeSolver\CubeSolver.cpp(314): warning C4715: 'CubeSolver::isGoalReached': not all control paths return a value
+  CubeSolver.vcxproj -> C:\Users\jakep\Documents\Semester 4.5\CSC 447\Project\CubeSolver\CubeSolver3\Debug\CubeSolver.exe

@@ -8,12 +8,12 @@ using namespace std;
 
 class Cube {
 public:
-	const string SOLVED_CUBE = "WWWWOOOOGGGGRRRRBBBBYYYY";
+	const string SOLVED_CUBE = "WWWWWWWWWOOOOOOOOOGGGGGGGGGRRRRRRRRRBBBBBBBBBYYYYYYYYY";
 	string cubeRepresentation;
 
 	Cube(string scrambleString) {
-		// need more input validation: 4 of each color, contains only WGORYB chars
-		if (scrambleString.length() != 24) {
+		// need more input validation: 9 of each color, contains only WGORYB chars, centers correct color
+		if (scrambleString.length() != 54) {
 			cubeRepresentation = SOLVED_CUBE;
 		}
 		else {
@@ -27,18 +27,21 @@ public:
 
 	void displayCube() {
 		string a = cubeRepresentation;
-		cout << "  " << a[0] << a[1] << endl;
-		cout << "  " << a[2] << a[3] << endl;
-		cout << a[4] << a[5] << a[8] << a[9] << a[12] << a[13] << a[16] << a[17] << endl;
-		cout << a[6] << a[7] << a[10] << a[11] << a[14] << a[15] << a[18] << a[19] << endl;
-		cout << "  " << a[20] << a[21] << endl;
-		cout << "  " << a[22] << a[23] << endl;
+		cout << "   " << a[0] << a[1] << a[2] << endl;
+		cout << "   " << a[3] << a[4] << a[5] << endl;
+		cout << "   " << a[6] << a[7] << a[8] << endl;
+		cout << a[9]  << a[10] << a[11] << a[18] << a[19] << a[20] << a[27] << a[28] << a[29] << a[36] << a[37] << a[38] << endl;
+		cout << a[12] << a[13] << a[14] << a[21] << a[22] << a[23] << a[30] << a[31] << a[32] << a[39] << a[40] << a[41] << endl;
+		cout << a[15] << a[16] << a[17] << a[24] << a[25] << a[26] << a[33] << a[34] << a[35] << a[42] << a[43] << a[44] << endl;
+		cout << "   " << a[45] << a[46] << a[47] << endl;
+		cout << "   " << a[48] << a[49] << a[50] << endl;
+		cout << "   " << a[51] << a[52] << a[53] << endl;
 	}
 
 	void R() {
 		string a = cubeRepresentation;
 		cubeRepresentation = "";
-		vector<int> v = { 0, 9, 2, 11, 4, 5, 6, 7, 8, 21, 10, 23, 14, 12, 15, 13, 3, 17, 1, 19, 20, 18, 22, 16 };
+		vector<int> v = { 0,1,20,3,4,23,6,7,26,9,10,11,12,13,14,15,16,17,18,19,47,21,22,50,24,25,53,33,30,27,34,31,28,35,32,29,8,37,38,5,40,41,2,43,44,45,46,42,48,49,39,51,52,36 };
 		for (auto i : v) {
 			cubeRepresentation.push_back(a[i]);
 		}
@@ -56,7 +59,7 @@ public:
 	void U() {
 		string a = cubeRepresentation;
 		cubeRepresentation = "";
-		vector<int> v = { 2, 0, 3, 1, 8, 9, 6, 7, 12, 13, 10, 11, 16, 17, 14, 15, 4, 5, 18, 19, 20, 21, 22, 23 };
+		vector<int> v = { 6,3,0,7,4,1,8,5,2,18,19,20,12,13,14,15,16,17,27,28,29,21,22,23,24,25,26,36,37,38,30,31,32,33,34,35,9,10,11,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53 };
 		for (auto i : v) {
 			cubeRepresentation.push_back(a[i]);
 		}
@@ -74,7 +77,7 @@ public:
 	void F() {
 		string a = cubeRepresentation;
 		cubeRepresentation = "";
-		vector<int> v = { 0, 1, 7, 5, 4, 20, 6, 21, 10, 8, 11, 9, 2, 13, 3, 15, 16, 17, 18, 19, 14, 12, 22, 23 };
+		vector<int> v = { 0,1,2,3,4,5,17,14,11,9,10,45,12,13,46,15,16,47,24,21,18,25,22,19,26,23,20,6,28,29,7,31,32,8,34,35,36,37,38,39,40,41,42,43,44,33,30,27,48,49,50,51,52,53 };
 		for (auto i : v) {
 			cubeRepresentation.push_back(a[i]);
 		}
@@ -92,7 +95,7 @@ public:
 	void L() {
 		string a = cubeRepresentation;
 		cubeRepresentation = "";
-		vector<int> v = { 19, 1, 17, 3, 6, 4, 7, 5, 0, 9, 2, 11, 12, 13, 14, 15, 16, 22, 18, 20, 8, 21, 10, 23 };
+		vector<int> v = { 44,1,2,41,4,5,38,7,8,15,12,9,16,13,10,17,14,11,0,19,20,3,22,23,6,25,26,27,28,29,30,31,32,33,34,35,36,37,51,39,40,48,42,43,45,18,46,47,21,49,50,24,52,53 };
 		for (auto i : v) {
 			cubeRepresentation.push_back(a[i]);
 		}
@@ -110,7 +113,7 @@ public:
 	void D() {
 		string a = cubeRepresentation;
 		cubeRepresentation = "";
-		vector<int> v = { 0, 1, 2, 3, 4, 5, 18, 19, 8, 9, 6, 7, 12, 13, 10, 11, 16, 17, 14, 15, 22, 20, 23, 21 };
+		vector<int> v = { 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,42,43,44,18,19,20,21,22,23,15,16,17,27,28,29,30,31,32,24,25,26,36,37,38,39,40,41,33,34,35,51,48,45,52,49,46,53,50,47 };
 		for (auto i : v) {
 			cubeRepresentation.push_back(a[i]);
 		}
@@ -128,7 +131,7 @@ public:
 	void B() {
 		string a = cubeRepresentation;
 		cubeRepresentation = "";
-		vector<int> v = { 13, 15, 2, 3, 1, 5, 0, 7, 8, 9, 10, 11, 12 ,23, 14, 22, 18, 16, 19, 17, 20, 21, 4, 6 };
+		vector<int> v = { 29,32,35,3,4,5,6,7,8,2,10,11,1,13,14,0,16,17,18,19,20,21,22,23,24,25,26,27,28,53,30,31,52,33,34,51,42,39,36,43,40,37,44,41,38,45,46,47,48,49,50,9,12,15 };
 		for (auto i : v) {
 			cubeRepresentation.push_back(a[i]);
 		}
@@ -164,18 +167,49 @@ public:
 		else if (move == "B2") B2();
 		else cout << "Illegal move: " << move << endl;
 	}
+
+	void applyAlg(string alg) {
+		for (int i = 0; i < alg.length(); i += 2) {
+			string move;
+			move.push_back(alg[i]);
+			move.push_back(alg[i+1]);
+			applyMove(move);
+		}
+	}
 };
 
 class CubeSolver {
 public:
 	unordered_map<string, string> memo;
-	vector<string> moves = { "U ", "Ui", "L ", "Li", "F ", "Fi", "R ", "Ri", "B ", "Bi", "D ", "Di" };
+	vector<string> movesG0 = { "L ", "R ", "F ", "B ", "U ", "D " };
+	vector<string> movesG1 = { "L ", "R ", "F ", "B ", "U2", "D2" };
+	vector<string> movesG2 = { "L ", "R ", "F2", "B2", "U2", "D2" };
+	vector<string> movesG3 = { "L2", "R2", "F2", "B2", "U2", "D2" };
 
 	string Solve(Cube cube) {
+		string solution = ""; // might break?
+
 		memo.clear();
-		string path = BFS(cube, "WWWWOOOOGGGGRRRRBBBBYYYY");
-		if (path != "") return formatAlg(path);
-		else return formatAlg(backBFS());
+		string path = BFS(cube, 0);
+		cube.applyAlg(path);
+		solution = solution + path;
+
+		memo.clear();
+		path = BFS(cube, 1);
+		cube.applyAlg(path);
+		solution = solution + path;
+
+		memo.clear();
+		path = BFS(cube, 2);
+		cube.applyAlg(path);
+		solution = solution + path;
+
+		memo.clear();
+		path = BFS(cube, 3);
+		cube.applyAlg(path);
+		solution = solution + path;
+
+		return solution;
 	}
 
 	string formatAlg(string alg) {
@@ -201,31 +235,17 @@ public:
 		return newAlg;
 	}
 
-	string invertAlg(string alg) {
-		reverse(alg.begin(), alg.end());
-		string newAlg = "";
-		for (int x = 0; x < alg.length(); x += 2) {
-			newAlg.push_back(alg[x+1]);
-			if (alg[x] == 'i') {
-				newAlg.push_back(' ');
-			}
-			else if (alg[x] == ' ') {
-				newAlg.push_back('i');
-			}
-			else if (alg[x] == '2') {
-				newAlg.push_back('2');
-			}
-			else {
-				cout << "Error in invert alg" << endl;
-				return newAlg;
-			}
+	string BFS(Cube cube, int phase) {
+		cout << "In BFS phase " << phase << endl;
+
+		vector<string> moves;
+		switch (phase) {
+		case 0: moves = movesG0; break;
+		case 1: moves = movesG1; break;
+		case 2: moves = movesG2; break;
+		case 3: moves = movesG3; break;
+		default: cout << "Illegal phase: " << phase << endl;
 		}
-		return newAlg;
-	}
-
-	string BFS(Cube cube, string goalState) {
-		cout << "In front bfs" << endl;
-
 		queue<string> path;
 		queue<string> q;
 		q.push(cube.cubeRepresentation);
@@ -246,92 +266,58 @@ public:
 			if (memo.count(current)) continue;
 			memo[current] = currentPath;
 
-			if (isGoalReached(goalState, current)) return currentPath;
-			//else if (currentPath.length() > 13) continue; // Could it just break at this point?
-			else {
-				for (int i = 0; i < moves.size(); i++) {
-					cube.cubeRepresentation = current;
-					cube.applyMove(moves[i]);
-					string nextState = cube.cubeRepresentation;
-					if (!memo.count(nextState)) {
-						string nextPath = currentPath + moves[i];
-						if (nextPath.length() < 14) {
-							q.push(cube.cubeRepresentation);
-							path.push(nextPath);
-						}
-					}
+			for (int i = 0; i < moves.size(); i++) {
+				cube.cubeRepresentation = current;
+				cube.applyMove(moves[i]);
+				string nextState = cube.cubeRepresentation;
+				if (!memo.count(nextState)) {
+					string nextPath = currentPath + moves[i];
+					if (isGoalReached(nextState, phase)) return nextPath;
+					q.push(cube.cubeRepresentation);
+					path.push(nextPath);
 				}
 			}
 		}
 		return "";
 	}
 
-	string backBFS() {
-		cout << "In back bfs" << endl;
-		Cube c("WWWWOOOOGGGGRRRRBBBBYYYY");
-		queue<string> path;
-		queue<string> q;
-		q.push(c.cubeRepresentation);
-		path.push("");
-		int count = 0;
-
-		while (!q.empty()) {
-
-			string current = q.front();
-			string currentPath = path.front();
-			q.pop();
-			path.pop();
-
-			count = count + 1;
-			if (count % 10000 == 0) {
-				cout << count << " " << currentPath << endl;
-			}
-
-			if (memo.count(current)) {
-				string answer = "";
-				answer.append(memo[current]);
-				answer.append(invertAlg(currentPath));
-				return answer;
-			}
-
-			for (int i = 0; i < moves.size(); i++) { // Add some way to prune already visited states - maybe another unordered map?
-				c.cubeRepresentation = current;
-				c.applyMove(moves[i]);
-				string nextPath = currentPath + moves[i];
-				q.push(c.cubeRepresentation);
-				path.push(nextPath);
-			}
-		}
-	}
-
-	bool isGoalReached(string goal, string current) {
-		for (int i = 0; i < goal.length(); i++) {
-			if (goal[i] == 'x') {
-				continue;
-			}
-			else {
-				if (goal[i] != current[i]) {
-					return false;
+	bool isGoalReached(string current, int phase) {
+		vector<pair<int, int>> edges = { {1,37},{3,10},{5,28},{7,19},{46,25},{48,16},{50,34},{52,43},{21,14},{23,30},{39,32},{41,12} };
+		switch(phase) {
+		case 0:
+			/*
+			Make sure all edge pieces oriented correctly:
+			Look at the U/D faces. If you see:
+			   - L/R colour (orange/red) it's bad.
+			   - F/B colour means you need to look round the side of the edge. If the side is U/D (white/yellow) it is bad.
+			Then look at the F/B faces of the E-slice (middle layer). The same rules apply. If you see:
+			   - L/R colour (orange/red) it's bad.
+			   - F/B colour (green/blue) means you need to look round the side of the edge. If the side is U/D (white/yellow) it is bad.
+			*/
+			for (int i = 0; i < edges.size(); i++) {
+				if (current[edges[i].first] == 'O' || current[edges[i].first] == 'R') return false;
+				if (current[edges[i].first] == 'G' || current[edges[i].first] == 'B') {
+					if (current[edges[i].second] == 'W' || current[edges[i].second] == 'Y') return false;
 				}
 			}
+			return true;
+		case 1:
+			// make sure top and bottom faces only contain top and bottom pieces
+			// middle will only contain middle edges
+			break;
+		case 2:
+			// make sure each face only has its own color or the color of the opposite side
+			break;
+		case 3:
+			return current == "WWWWWWWWWOOOOOOOOOGGGGGGGGGRRRRRRRRRBBBBBBBBBYYYYYYYYY";
 		}
-		return true;
 	}
 };
 
 int main() {
-	//Cube thing("RBOBGBYGYOORWRYBYWRGWGOW"); // scramble
-	Cube thing("WGWWOGOYRORRGOWRYBYBBBYG"); // scramble: R F' R' U' F R U R' U' R2 U'
-	//                                           solution: U R2 U L U B U' F' L' U L'
-	//Cube thing("WOWBOOYYGWGWRBRGYBYBRGRO"); // 1 turn first side
-	//Cube thing("WBWBOOOOGWGWRRRRYBYBYGYG"); // R'
-	//Cube thing("BBWWYBOOOOGWGWRRRRYBYGYG"); // R'U'
-	//Cube thing("BYWRYBOOOBGWWRGRGRGBYOYW"); // R'U'R'
-	//Cube thing("BYWGYROWBWOGORYRGRGBBOYW"); // R'U'R'F'
-	//Cube thing("BYWGYROGBWYRORGBGROWOWBY"); // R'U'R'F'D'
-	//Cube thing("OYWGBRYGBWYROBGYRWGOOWBR"); // R'U'R'F'D'B'
-	//Cube thing("WWGRGYGBRBOYWBRGOOYRYBWO"); // scramble R2 U F' D
-
+	Cube thing("");
+	thing.applyAlg("BiR LiU2DiF2BiU F2RiD2B2DiF2L2U R2L2F2Ui");
+	//thing.applyAlg("BiR ");
 	thing.displayCube();
 	CubeSolver solver;
 	cout << solver.Solve(thing) << endl;
