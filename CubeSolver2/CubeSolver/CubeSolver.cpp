@@ -39,7 +39,6 @@ public:
 		string a = cubeRepresentation;
 		cubeRepresentation = "";
 		vector<int> v = { 0, 9, 2, 11, 4, 5, 6, 7, 8, 21, 10, 23, 14, 12, 15, 13, 3, 17, 1, 19, 20, 18, 22, 16 };
-		if (v.size() != 24) cout << "Error in R" << endl;
 		for (auto i : v) {
 			cubeRepresentation.push_back(a[i]);
 		}
@@ -58,7 +57,6 @@ public:
 		string a = cubeRepresentation;
 		cubeRepresentation = "";
 		vector<int> v = { 2, 0, 3, 1, 8, 9, 6, 7, 12, 13, 10, 11, 16, 17, 14, 15, 4, 5, 18, 19, 20, 21, 22, 23 };
-		if (v.size() != 24) cout << "Error in U" << endl;
 		for (auto i : v) {
 			cubeRepresentation.push_back(a[i]);
 		}
@@ -77,7 +75,6 @@ public:
 		string a = cubeRepresentation;
 		cubeRepresentation = "";
 		vector<int> v = { 0, 1, 7, 5, 4, 20, 6, 21, 10, 8, 11, 9, 2, 13, 3, 15, 16, 17, 18, 19, 14, 12, 22, 23 };
-		if (v.size() != 24) cout << "Error in F" << endl;
 		for (auto i : v) {
 			cubeRepresentation.push_back(a[i]);
 		}
@@ -96,7 +93,6 @@ public:
 		string a = cubeRepresentation;
 		cubeRepresentation = "";
 		vector<int> v = { 19, 1, 17, 3, 6, 4, 7, 5, 0, 9, 2, 11, 12, 13, 14, 15, 16, 22, 18, 20, 8, 21, 10, 23 };
-		if (v.size() != 24) cout << "Error in L" << endl;
 		for (auto i : v) {
 			cubeRepresentation.push_back(a[i]);
 		}
@@ -115,7 +111,6 @@ public:
 		string a = cubeRepresentation;
 		cubeRepresentation = "";
 		vector<int> v = { 0, 1, 2, 3, 4, 5, 18, 19, 8, 9, 6, 7, 12, 13, 10, 11, 16, 17, 14, 15, 22, 20, 23, 21 };
-		if (v.size() != 24) cout << "Error in D" << endl;
 		for (auto i : v) {
 			cubeRepresentation.push_back(a[i]);
 		}
@@ -134,7 +129,6 @@ public:
 		string a = cubeRepresentation;
 		cubeRepresentation = "";
 		vector<int> v = { 13, 15, 2, 3, 1, 5, 0, 7, 8, 9, 10, 11, 12 ,23, 14, 22, 18, 16, 19, 17, 20, 21, 4, 6 };
-		if (v.size() != 24) cout << "Error in B" << endl;
 		for (auto i : v) {
 			cubeRepresentation.push_back(a[i]);
 		}
@@ -175,6 +169,7 @@ public:
 class CubeSolver {
 public:
 	unordered_map<string, string> memo;
+	vector<string> moves = { "U ", "Ui", "L ", "Li", "F ", "Fi", "R ", "Ri", "B ", "Bi", "D ", "Di" };
 
 	string Solve(Cube cube) {
 		memo.clear();
@@ -213,14 +208,11 @@ public:
 			newAlg.push_back(alg[x+1]);
 			if (alg[x] == 'i') {
 				newAlg.push_back(' ');
-				//newAlg = newAlg + alg[x + 1] + " ";
 			}
 			else if (alg[x] == ' ') {
-				//newAlg = newAlg + alg[x + 1] + "i";
 				newAlg.push_back('i');
 			}
 			else if (alg[x] == '2') {
-				//newAlg = newAlg + alg[x + 1] + "2";
 				newAlg.push_back('2');
 			}
 			else {
@@ -238,10 +230,6 @@ public:
 		queue<string> q;
 		q.push(cube.cubeRepresentation);
 		path.push("");
-		// move 'moves' into a  variable?
-		// moves = ["U ", "Ui", "U2", "L ", "Li", "L2", "F ", "Fi", "F2", "R ", "Ri", "R2", "B ", "Bi", "B2", "D ", "Di", "D2"]
-		vector<string> moves = { "U ", "Ui", "L ", "Li", "F ", "Fi", "R ", "Ri", "B ", "Bi", "D ", "Di" };
-		//vector<string> moves = { "U ", "L ", "F ", "R ", "B ", "D " };
 		int count = 0;
 
 		while (!q.empty()) {
@@ -258,21 +246,19 @@ public:
 			if (memo.count(current)) continue;
 			memo[current] = currentPath;
 
-			if (isGoalReached(goalState, current)) {
-				return currentPath;
-			}
-			else if (currentPath.length() > 9) { // each move is 2 chars, so it will do n/2 moves
-				continue;
-			}
+			if (isGoalReached(goalState, current)) return currentPath;
+			//else if (currentPath.length() > 13) continue; // Could it just break at this point?
 			else {
-				for (auto move : moves) {
+				for (int i = 0; i < moves.size(); i++) {
 					cube.cubeRepresentation = current;
-					cube.applyMove(move);
+					cube.applyMove(moves[i]);
 					string nextState = cube.cubeRepresentation;
 					if (!memo.count(nextState)) {
-						string nextPath = currentPath + move;
-						q.push(cube.cubeRepresentation);
-						path.push(nextPath);
+						string nextPath = currentPath + moves[i];
+						if (nextPath.length() < 14) {
+							q.push(cube.cubeRepresentation);
+							path.push(nextPath);
+						}
 					}
 				}
 			}
@@ -287,9 +273,6 @@ public:
 		queue<string> q;
 		q.push(c.cubeRepresentation);
 		path.push("");
-		// move 'moves' into a  variable?
-		// moves = ["U ", "Ui", "U2", "L ", "Li", "L2", "F ", "Fi", "F2", "R ", "Ri", "R2", "B ", "Bi", "B2", "D ", "Di", "D2"]
-		vector<string> moves = { "U ", "Ui", "L ", "Li", "F ", "Fi", "R ", "Ri", "B ", "Bi", "D ", "Di" };
 		int count = 0;
 
 		while (!q.empty()) {
@@ -311,50 +294,43 @@ public:
 				return answer;
 			}
 
-			for (auto move : moves) {
+			for (int i = 0; i < moves.size(); i++) { // Add some way to prune already visited states - maybe another unordered map?
 				c.cubeRepresentation = current;
-				c.applyMove(move);
-				string nextPath = currentPath + move;
+				c.applyMove(moves[i]);
+				string nextPath = currentPath + moves[i];
 				q.push(c.cubeRepresentation);
 				path.push(nextPath);
-
-
 			}
 		}
 	}
 
 	bool isGoalReached(string goal, string current) {
-		bool solved = true;
-		int count = 0;
-		for (auto i : goal) { // change to regular for loop to get rid of count variable
-			if (i == 'x') {
-				count = count + 1;
+		for (int i = 0; i < goal.length(); i++) {
+			if (goal[i] == 'x') {
 				continue;
 			}
 			else {
-				if (i != current[count]) {
-					solved = false;
-					break;
+				if (goal[i] != current[i]) {
+					return false;
 				}
-				count = count + 1;
 			}
 		}
-		return solved;
+		return true;
 	}
 };
 
 int main() {
-	Cube thing("RBOBGBYGYOORWRYBYWRGWGOW"); // scramble
-	//thing = Cube("WGWWOGOYRORRGOWRYBYBBBYG"); # scramble: R F' R' U' F R U R' U' R2 U'
+	//Cube thing("RBOBGBYGYOORWRYBYWRGWGOW"); // scramble
+	Cube thing("WGWWOGOYRORRGOWRYBYBBBYG"); // scramble: R F' R' U' F R U R' U' R2 U'
 	//                                           solution: U R2 U L U B U' F' L' U L'
-	//thing = Cube("WOWBOOYYGWGWRBRGYBYBRGRO"); # 1 turn first side
+	//Cube thing("WOWBOOYYGWGWRBRGYBYBRGRO"); // 1 turn first side
 	//Cube thing("WBWBOOOOGWGWRRRRYBYBYGYG"); // R'
-	//thing = Cube("BBWWYBOOOOGWGWRRRRYBYGYG"); # R'U'
-	//thing = Cube("BYWRYBOOOBGWWRGRGRGBYOYW"); # R'U'R'
-	//thing = Cube("BYWGYROWBWOGORYRGRGBBOYW"); # R'U'R'F'
-	//thing = Cube("BYWGYROGBWYRORGBGROWOWBY"); # R'U'R'F'D'
-	//thing = Cube("OYWGBRYGBWYROBGYRWGOOWBR"); # R'U'R'F'D'B'
-	//thing = Cube("WWGRGYGBRBOYWBRGOOYRYBWO"); # scramble R2 U F' D
+	//Cube thing("BBWWYBOOOOGWGWRRRRYBYGYG"); // R'U'
+	//Cube thing("BYWRYBOOOBGWWRGRGRGBYOYW"); // R'U'R'
+	//Cube thing("BYWGYROWBWOGORYRGRGBBOYW"); // R'U'R'F'
+	//Cube thing("BYWGYROGBWYRORGBGROWOWBY"); // R'U'R'F'D'
+	//Cube thing("OYWGBRYGBWYROBGYRWGOOWBR"); // R'U'R'F'D'B'
+	//Cube thing("WWGRGYGBRBOYWBRGOOYRYBWO"); // scramble R2 U F' D
 
 	thing.displayCube();
 	CubeSolver solver;
