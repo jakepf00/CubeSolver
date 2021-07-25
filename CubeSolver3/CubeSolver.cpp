@@ -3,7 +3,6 @@
 //	Split into separate files
 //	Change things to private
 //	Change Cube.applyMove to a switch statement
-//	Make Solve() and SolveWithDetails()
 
 #include<string>
 #include<unordered_map>
@@ -218,8 +217,19 @@ public:
 		cout << "Finished table generation in " << stepTime.count() << " milliseconds" << endl;
 		cout << "Table size: " << cornerParityTable.size() << endl << endl;
 	}
-
+	
 	string Solve(Cube cube) {
+		string solution = "";
+		for (int i = 0; i < 4; i++) {
+			memo.clear();
+			string path = BFS(cube, i);
+			cube.applyAlg(path);
+			solution += path;
+		}
+		return solution;
+	}
+
+	string SolveWithDetails(Cube cube) {
 		cout << "Scramble:" << endl;
 		cube.displayCube();
 		cout << endl;
@@ -229,7 +239,7 @@ public:
 		
 		auto t1 = chrono::high_resolution_clock::now();
 		for (int i = 0; i < 4; i++) {
-			step = completeStep(cube, i);
+			step = completeStepWithDetails(cube, i);
 			cube.applyAlg(step);
 			solution += step;
 		}
@@ -240,7 +250,7 @@ public:
 		return solution;
 	}
 	
-	string completeStep(Cube cube, int step) {
+	string completeStepWithDetails(Cube cube, int step) {
 		memo.clear();
 		auto t1 = chrono::high_resolution_clock::now();
 		string path = BFS(cube, step);
@@ -430,5 +440,5 @@ int main() {
 	Cube thing("");
 	thing.applyAlg("BiR LiU2DiF2BiU F2RiD2B2DiF2L2U R2L2F2Ui");
 	CubeSolver solver;
-	solver.Solve(thing);
+	solver.SolveWithDetails(thing);
 }
