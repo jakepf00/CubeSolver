@@ -189,13 +189,18 @@ public:
 	vector<string> movesG3 = { "L2", "R2", "F2", "B2", "U2", "D2" };
 
 	string Solve(Cube cube) {
+		chrono::_V2::system_clock::time_point t1;
+		chrono::_V2::system_clock::time_point t2;
+		chrono::duration<double, std::milli> stepTime;
+		chrono::duration<double, std::milli> totalTime;
+		
 		if (cornerParityTable.size() == 0) {
 			cout << "Generating corner parity table..." << endl;
-			auto t1 = chrono::high_resolution_clock::now();
 			memo.clear();
+			t1 = chrono::high_resolution_clock::now();
 			generateCornerParityTable();
-			auto t2 = chrono::high_resolution_clock::now();
-			chrono::duration<double, std::milli> totalTime = t2 - t1;
+			t2 = chrono::high_resolution_clock::now();
+			stepTime = t2 - t1;
 			cout << "Finished table generation in " << totalTime.count() << " milliseconds" << endl;
 			cout << "Table size: " << cornerParityTable.size() << endl << endl;
 		}
@@ -207,36 +212,58 @@ public:
 		cout << endl;
 
 		memo.clear();
+		t1 = chrono::high_resolution_clock::now();
 		string path = BFS(cube, 0);
+		t2 = chrono::high_resolution_clock::now();
+		stepTime = t2 - t1;
+		totalTime = stepTime;
 		cube.applyAlg(path);
 		solution = solution + path;
 		cout << "Step 1: " << path << endl;
+		cout << stepTime.count() << " milliseconds" << endl;
 		cube.displayCube();
 		cout << endl;
 
 		memo.clear();
+		t1 = chrono::high_resolution_clock::now();
 		path = BFS(cube, 1);
+		t2 = chrono::high_resolution_clock::now();
+		stepTime = t2 - t1;
+		totalTime += stepTime;
 		cube.applyAlg(path);
 		solution = solution + path;
 		cout << "Step 2: " << path << endl;
+		cout << stepTime.count() << " milliseconds" << endl;
 		cube.displayCube();
 		cout << endl;
 
 		memo.clear();
+		t1 = chrono::high_resolution_clock::now();
 		path = BFS(cube, 2);
+		t2 = chrono::high_resolution_clock::now();
+		stepTime = t2 - t1;
+		totalTime += stepTime;
 		cube.applyAlg(path);
 		solution = solution + path;
 		cout << "Step 3: " <<  path << endl;
+		cout << stepTime.count() << " milliseconds" << endl;
 		cube.displayCube();
 		cout << endl;
 
 		memo.clear();
+		t1 = chrono::high_resolution_clock::now();
 		path = BFS(cube, 3);
+		t2 = chrono::high_resolution_clock::now();
+		stepTime = t2 - t1;
+		totalTime += stepTime;
 		cube.applyAlg(path);
 		solution = solution + path;
 		cout << "Step 4: " << path << endl;
+		cout << stepTime.count() << " milliseconds" << endl;
 		cube.displayCube();
 		cout << endl;
+		
+		cout << "Total time: " << totalTime.count() << " milliseconds" << endl << endl;
 
 		return solution;
 	}
@@ -277,7 +304,6 @@ public:
 		queue<string> q;
 		q.push(cube.cubeRepresentation);
 		path.push("");
-		int count = 0;
 
 		if (isGoalReached(cube.cubeRepresentation, phase)) return "";
 
@@ -286,11 +312,6 @@ public:
 			string currentPath = path.front();
 			q.pop();
 			path.pop();
-
-			count = count + 1;
-			if (count % 10000 == 0) {
-				cout << count << " " << currentPath << endl;
-			}
 
 			if (memo.count(current)) continue;
 			memo[current] = currentPath;
@@ -317,7 +338,6 @@ public:
 		queue<string> q;
 		q.push(cube.cubeRepresentation);
 		path.push("");
-		int count = 0;
 		vector<int> v = { 0, 2, 6, 8, 9, 11, 15, 17, 18, 20, 24, 26, 27, 29, 33, 35, 36, 38, 42, 44, 45, 47, 51, 53 };
 
 
@@ -326,11 +346,6 @@ public:
 			string currentPath = path.front();
 			q.pop();
 			path.pop();
-
-			count = count + 1;
-			if (count % 10000 == 0) {
-				cout << count << " " << currentPath << endl;
-			}
 
 			if (memo.count(current)) continue;
 			memo[current] = currentPath;
@@ -391,19 +406,16 @@ public:
 			}	
 			return true;
 		case 1:
-			// make sure top and bottom faces only contain top and bottom pieces
-			// middle will only contain middle edges
-			pieces = { {14,21}, {23,30}, {32,39}, {41,12} };
-			for (int i = 0; i < pieces.size(); i++) {
-				if (current[pieces[i].first] == 'W' || current[pieces[i].first] == 'Y') return false;
-				if (current[pieces[i].second] == 'W' || current[pieces[i].second] == 'Y') return false;
+			// Top and bottom only have top/bottom colors
+			for (int i = 0; i < 9; i++) { // Top
+				if (current[i] != 'W' && current[i] != 'Y') return false;
+			}
+			for (int i = 45; i < 54; i++) { // Down
+				if (current[i] != 'W' && current[i] != 'Y') return false;
 			}
 			return true;
 		case 2:
 			// make sure each face only has its own color or the color of the opposite side
-			for (int i = 0; i < 9; i++) { // Top
-				if (current[i] != 'W' && current[i] != 'Y') return false;
-			}
 			for (int i = 9; i < 18; i++) { // Left
 				if (current[i] != 'O' && current[i] != 'R') return false;
 			}
@@ -416,9 +428,6 @@ public:
 			for (int i = 36; i < 45; i++) { // Back
 				if (current[i] != 'B' && current[i] != 'G') return false;
 			}
-			for (int i = 45; i < 54; i++) { // Down
-				if (current[i] != 'W' && current[i] != 'Y') return false;
-			}
 			if (!cornerParityCorrect(current)) {
 				return false;
 			}
@@ -426,18 +435,13 @@ public:
 		case 3:
 			return current == "WWWWWWWWWOOOOOOOOOGGGGGGGGGRRRRRRRRRBBBBBBBBBYYYYYYYYY";
 		}
+		return false;
 	}
 };
 
 int main() {
 	Cube thing("");
-	//thing.applyAlg("BiR LiU2DiF2BiU F2RiD2B2DiF2L2U R2L2F2Ui");
-	thing.applyAlg("U B2RiFiRiD2LiF2L2UiL U2R L2F2L D2L2U2D2");
-	
-	//thing.applyAlg("R2D2F2U2B2D2F2B2L2B2L2B2");
-	//thing.applyAlg("U L2D R2F2UiD B2R2DiF2D ");
-	//thing.applyAlg("D F2UiD2B2R B2D L UiLiB2");
-
+	thing.applyAlg("BiR LiU2DiF2BiU F2RiD2B2DiF2L2U R2L2F2Ui");
 	CubeSolver solver;
-	cout << solver.Solve(thing) << endl;
+	solver.Solve(thing);
 }
