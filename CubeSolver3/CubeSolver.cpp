@@ -2,7 +2,6 @@
 //	Optimize inverse and half turns
 //	Split into separate files
 //	Change things to private
-//	Move corner parity table generation to CubeSolver constructor
 //	Change Cube.applyMove to a switch statement
 //	Make Solve() and SolveWithDetails()
 
@@ -208,19 +207,19 @@ public:
 	vector<string> movesG1 = { "L ", "R ", "F2", "B2", "U ", "D " };
 	vector<string> movesG2 = { "L2", "R2", "F2", "B2", "U ", "D " };
 	vector<string> movesG3 = { "L2", "R2", "F2", "B2", "U2", "D2" };
+	
+	CubeSolver() {
+		cout << "Generating corner parity table..." << endl;
+		memo.clear();
+		auto t1 = chrono::high_resolution_clock::now();
+		generateCornerParityTable();
+		auto t2 = chrono::high_resolution_clock::now();
+		chrono::duration<double, std::milli> stepTime = t2 - t1;
+		cout << "Finished table generation in " << stepTime.count() << " milliseconds" << endl;
+		cout << "Table size: " << cornerParityTable.size() << endl << endl;
+	}
 
 	string Solve(Cube cube) {
-		if (cornerParityTable.size() == 0) { // just move this into the constructor?
-			cout << "Generating corner parity table..." << endl;
-			memo.clear();
-			auto t1 = chrono::high_resolution_clock::now();
-			generateCornerParityTable();
-			auto t2 = chrono::high_resolution_clock::now();
-			chrono::duration<double, std::milli> stepTime = t2 - t1;
-			cout << "Finished table generation in " << stepTime.count() << " milliseconds" << endl;
-			cout << "Table size: " << cornerParityTable.size() << endl << endl;
-		}
-
 		cout << "Scramble:" << endl;
 		cube.displayCube();
 		cout << endl;
