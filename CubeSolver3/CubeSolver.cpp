@@ -1,5 +1,4 @@
 // things to do:
-//	Input validation in cube constructor
 //	Optimize inverse and half turns
 //	Split into separate files
 //	Change things to private
@@ -22,13 +21,26 @@ public:
 	string cubeRepresentation;
 
 	Cube(string scrambleString) {
-		// need more input validation: 9 of each color, contains only WGORYB chars, centers correct color
+		cubeRepresentation = "";
+
 		if (scrambleString.length() != 54) {
 			cubeRepresentation = SOLVED_CUBE;
+			return;
 		}
-		else {
-			cubeRepresentation = scrambleString;
+		
+		for (int i = 0; i < 54; i++) {
+			if (scrambleString[i] != 'W' && scrambleString[i] != 'O' && scrambleString[i] != 'G' && scrambleString[i] != 'R' && scrambleString[i] != 'B' && scrambleString[i] != 'Y') {
+				cubeRepresentation = SOLVED_CUBE;
+				return;
+			}
 		}
+		
+		if (scrambleString[4] != 'W' || scrambleString[13] != 'O' || scrambleString[22] != 'G' || scrambleString[31] != 'R' || scrambleString[40] != 'B' || scrambleString[49] != 'Y') {
+			cubeRepresentation = SOLVED_CUBE;
+			return;
+		}
+		
+		cubeRepresentation = scrambleString;
 	}
 
 	bool isSolved() {
