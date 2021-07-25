@@ -4,6 +4,7 @@
 #include<vector>
 #include<iostream>
 #include<algorithm>
+#include<chrono>
 using namespace std;
 
 class Cube {
@@ -181,33 +182,61 @@ public:
 class CubeSolver {
 public:
 	unordered_map<string, string> memo;
+	vector<string> cornerParityTable;
 	vector<string> movesG0 = { "L ", "R ", "F ", "B ", "U ", "D " };
-	vector<string> movesG1 = { "L ", "R ", "F ", "B ", "U2", "D2" };
-	vector<string> movesG2 = { "L ", "R ", "F2", "B2", "U2", "D2" };
+	vector<string> movesG1 = { "L ", "R ", "F2", "B2", "U ", "D " };
+	vector<string> movesG2 = { "L2", "R2", "F2", "B2", "U ", "D " };
 	vector<string> movesG3 = { "L2", "R2", "F2", "B2", "U2", "D2" };
 
 	string Solve(Cube cube) {
-		string solution = ""; // might break?
+		if (cornerParityTable.size() == 0) {
+			cout << "Generating corner parity table..." << endl;
+			auto t1 = chrono::high_resolution_clock::now();
+			memo.clear();
+			generateCornerParityTable();
+			auto t2 = chrono::high_resolution_clock::now();
+			chrono::duration<double, std::milli> totalTime = t2 - t1;
+			cout << "Finished table generation in " << totalTime.count() << " milliseconds" << endl;
+			cout << "Table size: " << cornerParityTable.size() << endl << endl;
+		}
+
+		string solution = "";
+
+		cout << "Scramble:" << endl;
+		cube.displayCube();
+		cout << endl;
 
 		memo.clear();
 		string path = BFS(cube, 0);
 		cube.applyAlg(path);
 		solution = solution + path;
+		cout << "Step 1: " << path << endl;
+		cube.displayCube();
+		cout << endl;
 
 		memo.clear();
 		path = BFS(cube, 1);
 		cube.applyAlg(path);
 		solution = solution + path;
+		cout << "Step 2: " << path << endl;
+		cube.displayCube();
+		cout << endl;
 
 		memo.clear();
 		path = BFS(cube, 2);
 		cube.applyAlg(path);
 		solution = solution + path;
+		cout << "Step 3: " <<  path << endl;
+		cube.displayCube();
+		cout << endl;
 
 		memo.clear();
 		path = BFS(cube, 3);
 		cube.applyAlg(path);
 		solution = solution + path;
+		cout << "Step 4: " << path << endl;
+		cube.displayCube();
+		cout << endl;
 
 		return solution;
 	}
@@ -236,8 +265,6 @@ public:
 	}
 
 	string BFS(Cube cube, int phase) {
-		cout << "In BFS phase " << phase << endl;
-
 		vector<string> moves;
 		switch (phase) {
 		case 0: moves = movesG0; break;
@@ -251,6 +278,8 @@ public:
 		q.push(cube.cubeRepresentation);
 		path.push("");
 		int count = 0;
+
+		if (isGoalReached(cube.cubeRepresentation, phase)) return "";
 
 		while (!q.empty()) {
 			string current = q.front();
@@ -281,33 +310,119 @@ public:
 		return "";
 	}
 
-	bool isGoalReached(string current, int phase) {
-		vector<pair<int, int>> edges = { {1,37},{3,10},{5,28},{7,19},{46,25},{48,16},{50,34},{52,43},{21,14},{23,30},{39,32},{41,12} };
-		switch(phase) {
-		case 0:
-			/*
-			Make sure all edge pieces oriented correctly:
-			Look at the U/D faces. If you see:
-			   - L/R colour (orange/red) it's bad.
-			   - F/B colour means you need to look round the side of the edge. If the side is U/D (white/yellow) it is bad.
-			Then look at the F/B faces of the E-slice (middle layer). The same rules apply. If you see:
-			   - L/R colour (orange/red) it's bad.
-			   - F/B colour (green/blue) means you need to look round the side of the edge. If the side is U/D (white/yellow) it is bad.
-			*/
-			for (int i = 0; i < edges.size(); i++) {
-				if (current[edges[i].first] == 'O' || current[edges[i].first] == 'R') return false;
-				if (current[edges[i].first] == 'G' || current[edges[i].first] == 'B') {
-					if (current[edges[i].second] == 'W' || current[edges[i].second] == 'Y') return false;
+	void generateCornerParityTable() {
+		Cube cube(""); // default to solved cube
+		vector<string> moves = movesG3;
+		queue<string> path;
+		queue<string> q;
+		q.push(cube.cubeRepresentation);
+		path.push("");
+		int count = 0;
+		vector<int> v = { 0, 2, 6, 8, 9, 11, 15, 17, 18, 20, 24, 26, 27, 29, 33, 35, 36, 38, 42, 44, 45, 47, 51, 53 };
+
+
+		while (!q.empty()) {
+			string current = q.front();
+			string currentPath = path.front();
+			q.pop();
+			path.pop();
+
+			count = count + 1;
+			if (count % 10000 == 0) {
+				cout << count << " " << currentPath << endl;
+			}
+
+			if (memo.count(current)) continue;
+			memo[current] = currentPath;
+
+			string currentCorners = "";
+			for (auto i : v) {
+				currentCorners.push_back(current[i]);
+			}
+			bool alreadyThere = false;
+			for (int i = 0; i < cornerParityTable.size(); i++) {
+				if (cornerParityTable[i] == currentCorners) {
+					alreadyThere = true;
+					break;
 				}
 			}
+			if (!alreadyThere) {
+				cornerParityTable.push_back(currentCorners);
+			}
+			else continue;
+
+			for (int i = 0; i < moves.size(); i++) {
+				cube.cubeRepresentation = current;
+				cube.applyMove(moves[i]);
+				string nextState = cube.cubeRepresentation;
+				if (!memo.count(nextState)) {
+					string nextPath = currentPath + moves[i];
+					q.push(cube.cubeRepresentation);
+					path.push(nextPath);
+				}
+			}
+		}
+	}
+
+	bool cornerParityCorrect(string current) {
+		vector<int> corners = { 0, 2, 6, 8, 9, 11, 15, 17, 18, 20, 24, 26, 27, 29, 33, 35, 36, 38, 42, 44, 45, 47, 51, 53 };
+		for (int i = 0; i < cornerParityTable.size(); i++) {
+			for (int j = 0; j < corners.size(); j++) {
+				if (current[corners[j]] != cornerParityTable[i][j]) {
+					break;
+				}
+				if (j == corners.size() - 1) return true;
+			}
+		}
+		return false;
+	}
+
+	bool isGoalReached(string current, int phase) {
+		vector<pair<int, int>> pieces;
+		vector<int> colors;
+		switch(phase) {
+		case 0:
+			pieces = { {1,37},{3,10},{5,28},{7,19},{46,25},{48,16},{50,34},{52,43},{21,14},{23,30},{39,32},{41,12} };
+			for (int i = 0; i < pieces.size(); i++) {
+				if (current[pieces[i].first] == 'O' || current[pieces[i].first] == 'R') return false;
+				if (current[pieces[i].first] == 'G' || current[pieces[i].first] == 'B') {
+					if (current[pieces[i].second] == 'W' || current[pieces[i].second] == 'Y') return false;
+				}
+			}	
 			return true;
 		case 1:
 			// make sure top and bottom faces only contain top and bottom pieces
 			// middle will only contain middle edges
-			break;
+			pieces = { {14,21}, {23,30}, {32,39}, {41,12} };
+			for (int i = 0; i < pieces.size(); i++) {
+				if (current[pieces[i].first] == 'W' || current[pieces[i].first] == 'Y') return false;
+				if (current[pieces[i].second] == 'W' || current[pieces[i].second] == 'Y') return false;
+			}
+			return true;
 		case 2:
 			// make sure each face only has its own color or the color of the opposite side
-			break;
+			for (int i = 0; i < 9; i++) { // Top
+				if (current[i] != 'W' && current[i] != 'Y') return false;
+			}
+			for (int i = 9; i < 18; i++) { // Left
+				if (current[i] != 'O' && current[i] != 'R') return false;
+			}
+			for (int i = 18; i < 27; i++) { // Front
+				if (current[i] != 'B' && current[i] != 'G') return false;
+			}
+			for (int i = 27; i < 36; i++) { // Right
+				if (current[i] != 'O' && current[i] != 'R') return false;
+			}
+			for (int i = 36; i < 45; i++) { // Back
+				if (current[i] != 'B' && current[i] != 'G') return false;
+			}
+			for (int i = 45; i < 54; i++) { // Down
+				if (current[i] != 'W' && current[i] != 'Y') return false;
+			}
+			if (!cornerParityCorrect(current)) {
+				return false;
+			}
+			return true;
 		case 3:
 			return current == "WWWWWWWWWOOOOOOOOOGGGGGGGGGRRRRRRRRRBBBBBBBBBYYYYYYYYY";
 		}
@@ -316,9 +431,13 @@ public:
 
 int main() {
 	Cube thing("");
-	thing.applyAlg("BiR LiU2DiF2BiU F2RiD2B2DiF2L2U R2L2F2Ui");
-	//thing.applyAlg("BiR ");
-	thing.displayCube();
+	//thing.applyAlg("BiR LiU2DiF2BiU F2RiD2B2DiF2L2U R2L2F2Ui");
+	thing.applyAlg("U B2RiFiRiD2LiF2L2UiL U2R L2F2L D2L2U2D2");
+	
+	//thing.applyAlg("R2D2F2U2B2D2F2B2L2B2L2B2");
+	//thing.applyAlg("U L2D R2F2UiD B2R2DiF2D ");
+	//thing.applyAlg("D F2UiD2B2R B2D L UiLiB2");
+
 	CubeSolver solver;
 	cout << solver.Solve(thing) << endl;
 }

@@ -1,7 +1,12 @@
 ﻿  CubeSolver.cpp
-C:\Users\jakep\Documents\Semester 4.5\CSC 447\Project\CubeSolver\CubeSolver3\CubeSolver\CubeSolver.cpp(172,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\jakep\Documents\Semester 4.5\CSC 447\Project\CubeSolver\CubeSolver3\CubeSolver\CubeSolver.cpp(217,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\jakep\Documents\Semester 4.5\CSC 447\Project\CubeSolver\CubeSolver3\CubeSolver\CubeSolver.cpp(269,22): warning C4018: '<': signed/unsigned mismatch
-C:\Users\jakep\Documents\Semester 4.5\CSC 447\Project\CubeSolver\CubeSolver3\CubeSolver\CubeSolver.cpp(297,22): warning C4018: '<': signed/unsigned mismatch
-C:\Users\jakep\Documents\Semester 4.5\CSC 447\Project\CubeSolver\CubeSolver3\CubeSolver\CubeSolver.cpp(314): warning C4715: 'CubeSolver::isGoalReached': not all control paths return a value
+C:\Users\jakep\Documents\Semester 4.5\CSC 447\Project\CubeSolver\CubeSolver3\CubeSolver\CubeSolver.cpp(173,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jakep\Documents\Semester 4.5\CSC 447\Project\CubeSolver\CubeSolver3\CubeSolver\CubeSolver.cpp(246,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jakep\Documents\Semester 4.5\CSC 447\Project\CubeSolver\CubeSolver3\CubeSolver\CubeSolver.cpp(298,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jakep\Documents\Semester 4.5\CSC 447\Project\CubeSolver\CubeSolver3\CubeSolver\CubeSolver.cpp(343,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jakep\Documents\Semester 4.5\CSC 447\Project\CubeSolver\CubeSolver3\CubeSolver\CubeSolver.cpp(354,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jakep\Documents\Semester 4.5\CSC 447\Project\CubeSolver\CubeSolver3\CubeSolver\CubeSolver.cpp(369,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jakep\Documents\Semester 4.5\CSC 447\Project\CubeSolver\CubeSolver3\CubeSolver\CubeSolver.cpp(370,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jakep\Documents\Semester 4.5\CSC 447\Project\CubeSolver\CubeSolver3\CubeSolver\CubeSolver.cpp(386,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jakep\Documents\Semester 4.5\CSC 447\Project\CubeSolver\CubeSolver3\CubeSolver\CubeSolver.cpp(397,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jakep\Documents\Semester 4.5\CSC 447\Project\CubeSolver\CubeSolver3\CubeSolver\CubeSolver.cpp(429): warning C4715: 'CubeSolver::isGoalReached': not all control paths return a value
   CubeSolver.vcxproj -> C:\Users\jakep\Documents\Semester 4.5\CSC 447\Project\CubeSolver\CubeSolver3\Debug\CubeSolver.exe
