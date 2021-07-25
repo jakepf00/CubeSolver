@@ -1,3 +1,12 @@
+// things to do:
+//	Input validation in cube constructor
+//	Optimize inverse and half turns
+//	Split into separate files
+//	Change things to private
+//	Move corner parity table generation to CubeSolver constructor
+//	Change Cube.applyMove to a switch statement
+//	Make Solve() and SolveWithDetails()
+
 #include<string>
 #include<unordered_map>
 #include<queue>
@@ -28,15 +37,15 @@ public:
 
 	void displayCube() {
 		string a = cubeRepresentation;
-		cout << "   " << a[0] << a[1] << a[2] << endl;
-		cout << "   " << a[3] << a[4] << a[5] << endl;
-		cout << "   " << a[6] << a[7] << a[8] << endl;
-		cout << a[9]  << a[10] << a[11] << a[18] << a[19] << a[20] << a[27] << a[28] << a[29] << a[36] << a[37] << a[38] << endl;
-		cout << a[12] << a[13] << a[14] << a[21] << a[22] << a[23] << a[30] << a[31] << a[32] << a[39] << a[40] << a[41] << endl;
-		cout << a[15] << a[16] << a[17] << a[24] << a[25] << a[26] << a[33] << a[34] << a[35] << a[42] << a[43] << a[44] << endl;
-		cout << "   " << a[45] << a[46] << a[47] << endl;
-		cout << "   " << a[48] << a[49] << a[50] << endl;
-		cout << "   " << a[51] << a[52] << a[53] << endl;
+		cout << "\t   " << a[0] << a[1] << a[2] << endl;
+		cout << "\t   " << a[3] << a[4] << a[5] << endl;
+		cout << "\t   " << a[6] << a[7] << a[8] << endl;
+		cout << "\t" << a[9]  << a[10] << a[11] << a[18] << a[19] << a[20] << a[27] << a[28] << a[29] << a[36] << a[37] << a[38] << endl;
+		cout << "\t" << a[12] << a[13] << a[14] << a[21] << a[22] << a[23] << a[30] << a[31] << a[32] << a[39] << a[40] << a[41] << endl;
+		cout << "\t" << a[15] << a[16] << a[17] << a[24] << a[25] << a[26] << a[33] << a[34] << a[35] << a[42] << a[43] << a[44] << endl;
+		cout << "\t   " << a[45] << a[46] << a[47] << endl;
+		cout << "\t   " << a[48] << a[49] << a[50] << endl;
+		cout << "\t   " << a[51] << a[52] << a[53] << endl;
 	}
 
 	void R() {
@@ -189,83 +198,49 @@ public:
 	vector<string> movesG3 = { "L2", "R2", "F2", "B2", "U2", "D2" };
 
 	string Solve(Cube cube) {
-		chrono::_V2::system_clock::time_point t1;
-		chrono::_V2::system_clock::time_point t2;
-		chrono::duration<double, std::milli> stepTime;
-		chrono::duration<double, std::milli> totalTime;
-		
-		if (cornerParityTable.size() == 0) {
+		if (cornerParityTable.size() == 0) { // just move this into the constructor?
 			cout << "Generating corner parity table..." << endl;
 			memo.clear();
-			t1 = chrono::high_resolution_clock::now();
+			auto t1 = chrono::high_resolution_clock::now();
 			generateCornerParityTable();
-			t2 = chrono::high_resolution_clock::now();
-			stepTime = t2 - t1;
-			cout << "Finished table generation in " << totalTime.count() << " milliseconds" << endl;
+			auto t2 = chrono::high_resolution_clock::now();
+			chrono::duration<double, std::milli> stepTime = t2 - t1;
+			cout << "Finished table generation in " << stepTime.count() << " milliseconds" << endl;
 			cout << "Table size: " << cornerParityTable.size() << endl << endl;
 		}
-
-		string solution = "";
 
 		cout << "Scramble:" << endl;
 		cube.displayCube();
 		cout << endl;
-
-		memo.clear();
-		t1 = chrono::high_resolution_clock::now();
-		string path = BFS(cube, 0);
-		t2 = chrono::high_resolution_clock::now();
-		stepTime = t2 - t1;
-		totalTime = stepTime;
-		cube.applyAlg(path);
-		solution = solution + path;
-		cout << "Step 1: " << path << endl;
-		cout << stepTime.count() << " milliseconds" << endl;
-		cube.displayCube();
-		cout << endl;
-
-		memo.clear();
-		t1 = chrono::high_resolution_clock::now();
-		path = BFS(cube, 1);
-		t2 = chrono::high_resolution_clock::now();
-		stepTime = t2 - t1;
-		totalTime += stepTime;
-		cube.applyAlg(path);
-		solution = solution + path;
-		cout << "Step 2: " << path << endl;
-		cout << stepTime.count() << " milliseconds" << endl;
-		cube.displayCube();
-		cout << endl;
-
-		memo.clear();
-		t1 = chrono::high_resolution_clock::now();
-		path = BFS(cube, 2);
-		t2 = chrono::high_resolution_clock::now();
-		stepTime = t2 - t1;
-		totalTime += stepTime;
-		cube.applyAlg(path);
-		solution = solution + path;
-		cout << "Step 3: " <<  path << endl;
-		cout << stepTime.count() << " milliseconds" << endl;
-		cube.displayCube();
-		cout << endl;
-
-		memo.clear();
-		t1 = chrono::high_resolution_clock::now();
-		path = BFS(cube, 3);
-		t2 = chrono::high_resolution_clock::now();
-		stepTime = t2 - t1;
-		totalTime += stepTime;
-		cube.applyAlg(path);
-		solution = solution + path;
-		cout << "Step 4: " << path << endl;
-		cout << stepTime.count() << " milliseconds" << endl;
-		cube.displayCube();
-		cout << endl;
 		
-		cout << "Total time: " << totalTime.count() << " milliseconds" << endl << endl;
-
+		string solution = "";
+		string step = "";
+		
+		auto t1 = chrono::high_resolution_clock::now();
+		for (int i = 0; i < 4; i++) {
+			step = completeStep(cube, i);
+			cube.applyAlg(step);
+			solution += step;
+		}
+		auto t2 = chrono::high_resolution_clock::now();
+		chrono::duration<double, std::milli> totalTime = t2 - t1;
+		cout << "Total time: " << totalTime.count() << " milliseconds" << endl;
+		
 		return solution;
+	}
+	
+	string completeStep(Cube cube, int step) {
+		memo.clear();
+		auto t1 = chrono::high_resolution_clock::now();
+		string path = BFS(cube, step);
+		auto t2 = chrono::high_resolution_clock::now();
+		chrono::duration<double, std::milli> stepTime = t2 - t1;
+		cube.applyAlg(path);
+		cout << "Step " << step << ": " << path << endl;
+		cout << "\t" << stepTime.count() << " milliseconds" << endl;
+		cube.displayCube();
+		cout << endl;
+		return path;
 	}
 
 	string formatAlg(string alg) {
@@ -397,6 +372,7 @@ public:
 		vector<int> colors;
 		switch(phase) {
 		case 0:
+			// Edges are correctly oriented - no F or B moves to solve each edge
 			pieces = { {1,37},{3,10},{5,28},{7,19},{46,25},{48,16},{50,34},{52,43},{21,14},{23,30},{39,32},{41,12} };
 			for (int i = 0; i < pieces.size(); i++) {
 				if (current[pieces[i].first] == 'O' || current[pieces[i].first] == 'R') return false;
