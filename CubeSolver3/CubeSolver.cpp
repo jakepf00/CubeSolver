@@ -2,7 +2,10 @@
 //	Optimize inverse and half turns
 //	Split into separate files
 //	Change things to private
-//	Change Cube.applyMove to a switch statement
+//	More sample scrambles
+//	Further split steps?
+//	Meet in the middle
+//	Alg formatting (remove redundant letters)
 
 #include<string>
 #include<unordered_map>
@@ -47,6 +50,83 @@ public:
 
 	void displayCube() {
 		string a = cubeRepresentation;
+		cout << "\t    ";
+		for (int i = 0; i < 3; i++) {
+			displayChar(a[i]);
+		}
+		cout << endl << "\t    ";
+		for (int i = 3; i < 6; i++) {
+			displayChar(a[i]);
+		}
+		cout << endl << "\t    ";
+		for (int i = 6; i < 9; i++) {
+			displayChar(a[i]);
+		}
+		
+		cout << endl << endl << "\t";
+		displayChar(a[9]);
+		displayChar(a[10]);
+		displayChar(a[11]);
+		cout << " ";
+		displayChar(a[18]);
+		displayChar(a[19]);
+		displayChar(a[20]);
+		cout << " ";
+		displayChar(a[27]);
+		displayChar(a[28]);
+		displayChar(a[29]);
+		cout << " ";
+		displayChar(a[36]);
+		displayChar(a[37]);
+		displayChar(a[38]);
+		cout << endl << "\t";
+		displayChar(a[12]);
+		displayChar(a[13]);
+		displayChar(a[14]);
+		cout << " ";
+		displayChar(a[21]);
+		displayChar(a[22]);
+		displayChar(a[23]);
+		cout << " ";
+		displayChar(a[30]);
+		displayChar(a[31]);
+		displayChar(a[32]);
+		cout << " ";
+		displayChar(a[39]);
+		displayChar(a[40]);
+		displayChar(a[41]);
+		cout << endl << "\t";
+		displayChar(a[15]);
+		displayChar(a[16]);
+		displayChar(a[17]);
+		cout << " ";
+		displayChar(a[24]);
+		displayChar(a[25]);
+		displayChar(a[26]);
+		cout << " ";
+		displayChar(a[33]);
+		displayChar(a[34]);
+		displayChar(a[35]);
+		cout << " ";
+		displayChar(a[42]);
+		displayChar(a[43]);
+		displayChar(a[44]);
+		
+		cout << endl << endl << "\t    ";
+		for (int i = 45; i < 48; i++) {
+			displayChar(a[i]);
+		}
+		cout << endl << "\t    ";
+		for (int i = 48; i < 51; i++) {
+			displayChar(a[i]);
+		}
+		cout << endl << "\t    ";
+		for (int i = 51; i < 54; i++) {
+			displayChar(a[i]);
+		}
+		
+		/*
+		string a = cubeRepresentation;
 		cout << "\t   " << a[0] << a[1] << a[2] << endl;
 		cout << "\t   " << a[3] << a[4] << a[5] << endl;
 		cout << "\t   " << a[6] << a[7] << a[8] << endl;
@@ -56,6 +136,41 @@ public:
 		cout << "\t   " << a[45] << a[46] << a[47] << endl;
 		cout << "\t   " << a[48] << a[49] << a[50] << endl;
 		cout << "\t   " << a[51] << a[52] << a[53] << endl;
+		*/
+	}
+	void displayChar(char color) {
+		#define RESET   "\033[0m"
+		#define RED     "\033[41m"
+		#define GREEN   "\033[42m"
+		#define YELLOW  "\033[43m"
+		#define BLUE    "\033[44m"
+		#define WHITE   "\033[47m"
+		#define ORANGE  "\033[48;5;202m"
+		
+		if (color == 'W') {
+			cout << WHITE << "W" << RESET;
+			return;
+		}
+		if (color == 'O') {
+			cout << ORANGE << "O" << RESET;
+			return;
+		}
+		if (color == 'G') {
+			cout << GREEN << "G" << RESET;
+			return;
+		}
+		if (color == 'R') {
+			cout << RED << "R" << RESET;
+			return;
+		}
+		if (color == 'B') {
+			cout << BLUE << "B" << RESET;
+			return;
+		}
+		if (color == 'Y') {
+			cout << YELLOW << "Y" << RESET;
+			return;
+		}
 	}
 
 	void R() {
@@ -232,7 +347,7 @@ public:
 	string SolveWithDetails(Cube cube) {
 		cout << "Scramble:" << endl;
 		cube.displayCube();
-		cout << endl;
+		cout << endl << endl;
 		
 		string solution = "";
 		string step = "";
@@ -257,10 +372,10 @@ public:
 		auto t2 = chrono::high_resolution_clock::now();
 		chrono::duration<double, std::milli> stepTime = t2 - t1;
 		cube.applyAlg(path);
-		cout << "Step " << step << ": " << path << endl;
+		cout << "Step " << step + 1 << ": " << path << endl;
 		cout << "\t" << stepTime.count() << " milliseconds" << endl;
 		cube.displayCube();
-		cout << endl;
+		cout << endl << endl;
 		return path;
 	}
 
@@ -438,7 +553,10 @@ public:
 
 int main() {
 	Cube thing("");
-	thing.applyAlg("BiR LiU2DiF2BiU F2RiD2B2DiF2L2U R2L2F2Ui");
+	//thing.applyAlg("BiR LiU2DiF2BiU F2RiD2B2DiF2L2U R2L2F2Ui"); // 7 seconds
+	//thing.applyAlg("RiU2LiF2LiB2L D2RiD2FiUiL R2FiU2F R D2R "); // 20 seconds
+	//thing.applyAlg("B2DiR F BiR2UiLiFiR U2F2D2FiD2FiD2B D2L2B2L2"); // 17 seconds
+	thing.applyAlg("DiL D FiLiU2B2U D2RiL2U2B2DiB2R2U2DiF2"); // 8 seconds
 	CubeSolver solver;
 	solver.SolveWithDetails(thing);
 }
