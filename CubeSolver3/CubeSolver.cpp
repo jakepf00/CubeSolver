@@ -148,27 +148,27 @@ public:
 		#define ORANGE  "\033[48;5;202m"
 		
 		if (color == 'W') {
-			cout << WHITE << "W" << RESET;
+			cout << WHITE << " " << RESET;
 			return;
 		}
 		if (color == 'O') {
-			cout << ORANGE << "O" << RESET;
+			cout << ORANGE << " " << RESET;
 			return;
 		}
 		if (color == 'G') {
-			cout << GREEN << "G" << RESET;
+			cout << GREEN << " " << RESET;
 			return;
 		}
 		if (color == 'R') {
-			cout << RED << "R" << RESET;
+			cout << RED << " " << RESET;
 			return;
 		}
 		if (color == 'B') {
-			cout << BLUE << "B" << RESET;
+			cout << BLUE << " " << RESET;
 			return;
 		}
 		if (color == 'Y') {
-			cout << YELLOW << "Y" << RESET;
+			cout << YELLOW << " " << RESET;
 			return;
 		}
 	}
@@ -553,10 +553,12 @@ public:
 
 int main() {
 	Cube thing("");
-	//thing.applyAlg("BiR LiU2DiF2BiU F2RiD2B2DiF2L2U R2L2F2Ui"); // 7 seconds
-	//thing.applyAlg("RiU2LiF2LiB2L D2RiD2FiUiL R2FiU2F R D2R "); // 20 seconds
+	thing.applyAlg("BiR LiU2DiF2BiU F2RiD2B2DiF2L2U R2L2F2Ui"); // 7 seconds
+	//thing.applyAlg("DiL D FiLiU2B2U D2RiL2U2B2DiB2R2U2DiF2"); // 8 seconds
 	//thing.applyAlg("B2DiR F BiR2UiLiFiR U2F2D2FiD2FiD2B D2L2B2L2"); // 17 seconds
-	thing.applyAlg("DiL D FiLiU2B2U D2RiL2U2B2DiB2R2U2DiF2"); // 8 seconds
+	//thing.applyAlg("RiU2LiF2LiB2L D2RiD2FiUiL R2FiU2F R D2R "); // 20 seconds
+
+
 	CubeSolver solver;
 	solver.SolveWithDetails(thing);
 }
